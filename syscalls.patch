@@ -1,0 +1,18 @@
+--- /home/ananth/linux-6.0.11.orig/linux-6.0.11/include/linux/syscalls.h	2022-12-02 10:43:18.000000000 -0600
++++ /home/ananth/linux-6.0.11/include/linux/syscalls.h	2022-12-10 17:15:39.769383220 -0600
+@@ -87,6 +87,15 @@
+ #include <linux/personality.h>
+ #include <trace/syscall.h>
+ 
++struct count_SC_struct{
++  atomic_t forkCount;
++  atomic_t vforkCount;
++  atomic_t execveCount;
++  atomic_t cloneCount;
++  atomic_t clone3Count;
++};
++extern struct count_SC_struct count_SC;
++
+ #ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+ /*
+  * It may be useful for an architecture to override the definitions of the

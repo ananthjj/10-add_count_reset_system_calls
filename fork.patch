@@ -1,0 +1,59 @@
+--- /home/ananth/linux-6.0.11.orig/linux-6.0.11/kernel/fork.c	2022-12-02 10:43:18.000000000 -0600
++++ /home/ananth/linux-6.0.11/kernel/fork.c	2022-12-10 13:22:29.572059117 -0600
+@@ -2627,6 +2627,7 @@
+  *
+  * args->exit_signal is expected to be checked for sanity by the caller.
+  */
++//int clone_counter = 0;
+ pid_t kernel_clone(struct kernel_clone_args *args)
+ {
+ 	u64 clone_flags = args->flags;
+@@ -2704,6 +2705,7 @@
+ 	}
+ 
+ 	put_pid(pid);
++	//clone_counter++;
+ 	return nr;
+ }
+ 
+@@ -2748,6 +2750,7 @@
+ 		.exit_signal = SIGCHLD,
+ 	};
+ 
++	atomic_inc(&(count_SC.forkCount));
+ 	return kernel_clone(&args);
+ #else
+ 	/* can not support in nommu mode */
+@@ -2764,6 +2767,7 @@
+ 		.exit_signal	= SIGCHLD,
+ 	};
+ 
++	atomic_inc(&(count_SC.vforkCount));
+ 	return kernel_clone(&args);
+ }
+ #endif
+@@ -2773,7 +2777,7 @@
+ SYSCALL_DEFINE5(clone, unsigned long, clone_flags, unsigned long, newsp,
+ 		 int __user *, parent_tidptr,
+ 		 unsigned long, tls,
+-		 int __user *, child_tidptr)
++		int __user *, child_tidptr)
+ #elif defined(CONFIG_CLONE_BACKWARDS2)
+ SYSCALL_DEFINE5(clone, unsigned long, newsp, unsigned long, clone_flags,
+ 		 int __user *, parent_tidptr,
+@@ -2802,6 +2806,7 @@
+ 		.tls		= tls,
+ 	};
+ 
++	atomic_inc(&(count_SC.cloneCount));
+ 	return kernel_clone(&args);
+ }
+ #endif
+@@ -2960,6 +2965,7 @@
+ 	if (!clone3_args_valid(&kargs))
+ 		return -EINVAL;
+ 
++	atomic_inc(&(count_SC.clone3Count));
+ 	return kernel_clone(&kargs);
+ }
+ #endif

@@ -1,0 +1,36 @@
+--- /home/ananth/linux-6.0.11.orig/linux-6.0.11/kernel/sys.c	2022-12-02 10:43:18.000000000 -0600
++++ /home/ananth/linux-6.0.11/kernel/sys.c	2022-12-10 17:06:44.620837759 -0600
+@@ -161,6 +161,33 @@
+ EXPORT_SYMBOL(fs_overflowuid);
+ EXPORT_SYMBOL(fs_overflowgid);
+ 
++SYSCALL_DEFINE1(count_SC, char *, msg)
++{
++  char buf[256];
++  long copied = strncpy_from_user(buf, msg, sizeof(buf));
++  if (copied < 0 || copied == sizeof(buf))
++    return -EFAULT;
++  printk(KERN_INFO "Ananth syscall called with \"%s\"\n", buf);
++  return 0;
++}
++
++SYSCALL_DEFINE1(retrieveCount_SC, struct count_SC_struct __user*, counts)
++{
++  if (copy_to_user(counts, &count_SC, sizeof(count_SC)))
++    return -EFAULT;
++  return 0;
++}
++
++SYSCALL_DEFINE0(resetCount_SC)
++{
++  atomic_set(&count_SC.forkCount,0);
++  atomic_set(&count_SC.vforkCount,0);
++  atomic_set(&count_SC.execveCount,0);
++  atomic_set(&count_SC.cloneCount,0);
++  atomic_set(&count_SC.clone3Count,0);
++  return 0;
++}
++
+ /*
+  * Returns true if current's euid is same as p's uid or euid,
+  * or has CAP_SYS_NICE to p's user_ns.

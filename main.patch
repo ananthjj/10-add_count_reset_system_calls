@@ -1,0 +1,10 @@
+--- /home/ananth/linux-6.0.11.orig/linux-6.0.11/init/main.c	2022-12-02 10:43:18.000000000 -0600
++++ /home/ananth/linux-6.0.11/init/main.c	2022-12-10 17:11:39.588517251 -0600
+@@ -192,6 +192,7 @@
+ 
+ static const char *argv_init[MAX_INIT_ARGS+2] = { "init", NULL, };
+ const char *envp_init[MAX_INIT_ENVS+2] = { "HOME=/", "TERM=linux", NULL, };
++struct count_SC_struct count_SC = { .forkCount = 0, .vforkCount = 0, .execveCount = 0, .cloneCount = 0, .clone3Count = 0 };
+ static const char *panic_later, *panic_param;
+ 
+ extern const struct obs_kernel_param __setup_start[], __setup_end[];

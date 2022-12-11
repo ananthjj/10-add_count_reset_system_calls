@@ -1,0 +1,12 @@
+--- /home/ananth/linux-6.0.11.orig/linux-6.0.11/arch/x86/entry/syscalls/syscall_64.tbl	2022-12-02 10:43:18.000000000 -0600
++++ /home/ananth/linux-6.0.11/arch/x86/entry/syscalls/syscall_64.tbl	2022-12-10 02:51:02.149077930 -0600
+@@ -343,6 +343,9 @@
+ 332	common	statx			sys_statx
+ 333	common	io_pgetevents		sys_io_pgetevents
+ 334	common	rseq			sys_rseq
++335	common	count_SC		sys_count_SC
++336	common	retrieveCount_SC	sys_retrieveCount_SC
++337	common	resetCount_SC		sys_resetCount_SC
+ # don't use numbers 387 through 423, add new calls after the last
+ # 'common' entry
+ 424	common	pidfd_send_signal	sys_pidfd_send_signal
