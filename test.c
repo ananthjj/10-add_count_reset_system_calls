@@ -3,7 +3,6 @@
 #include <sys/syscall.h>
 #include <stdio.h>
 #include <string.h>
-#include "/proc/self/cwd/syscalls.h"
 
 /*
  * Put your syscall number here.
@@ -11,6 +10,14 @@
 #define SYS_count_SC 335
 #define SYS_retrieveCount_SC 336
 #define SYS_resetCount_SC 337
+
+struct count_SC_struct{
+  int forkCount;
+  int vforkCount;
+  int execveCount;
+  int cloneCount;
+  int clone3Count;
+};
 
 int main(int argc, char **argv)
 {
@@ -30,7 +37,7 @@ else {
     printf("Making retrieve system call\n");
     res = syscall(SYS_retrieveCount_SC, &scC);
     printf("System call count values are as follow:\n");
-    printf("fork: %d, vfork: %d, clone: %d, execve: %d, clone3: %d\n", scC.forkCount_SC, scC.vforkCount_SC, scC.cloneCount_SC, scC.execveCount_SC, scC.clone3Count_SC);
+    printf("fork: %d, vfork: %d, clone: %d, execve: %d, clone3: %d\n", scC.forkCount, scC.vforkCount, scC.cloneCount, scC.execveCount, scC.clone3Count);
     printf("System call returned %ld.\n", res);
   }
   else{
